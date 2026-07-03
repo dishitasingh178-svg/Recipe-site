@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dishita Di Meethaiyan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FBF3E7;
+            --card: #FFFFFF;
+            --maroon: #7A2E2E;
+            --terracotta: #C1622A;
+            --gold: #D9A441;
+            --ink: #3A2A22;
+            --muted: #8A7566;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: var(--ink);
+            background: var(--cream);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Fraunces', serif;
+            color: var(--maroon);
+            margin: 0 0 0.5em;
+        }
+
+        .site-header {
+            background: var(--maroon);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .site-header h1 {
+            color: var(--cream);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin: 0;
+        }
+
+        .site-header p {
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            margin: 0.5rem 0 0;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            grid-template-areas: "sidebar pop";
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            position: sticky;
+            top: 1.5rem;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 1.5rem 1rem;
+            box-shadow: 0 4px 16px rgba(122, 46, 46, 0.08);
+            max-height: calc(100vh - 3rem);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+        }
+
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .sidebar a {
+            color: var(--ink);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.55rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .sidebar a:hover {
+            background: var(--cream);
+            color: var(--terracotta);
+        }
+
+        .sidebar a.active {
+            background: var(--maroon);
+            color: var(--cream);
+        }
+
+        .pop {
+            grid-area: pop;
+        }
+
+        .recipe {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(122, 46, 46, 0.08);
+            overflow: hidden;
+            /* clearfix for floated image */
+            scroll-margin-top: 1.5rem;
+        }
+
+        .recipe img {
+            float: left;
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 0 1.75rem 1rem 0;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+        }
+
+        .recipe h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .recipe .intro {
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .recipe h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--terracotta);
+            border-bottom: 2px solid var(--gold);
+            display: inline-block;
+            padding-bottom: 0.2rem;
+            margin: 1.5rem 0 1rem;
+            clear: left;
+        }
+
+        .ingredients {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.5rem 1.5rem;
+            clear: left;
+        }
+
+        .ingredients li {
+            padding: 0.4rem 0.6rem;
+            background: var(--cream);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .method {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            counter-reset: step;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .method li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 2.75rem;
+            font-size: 0.97rem;
+        }
+
+        .method li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            width: 1.9rem;
+            height: 1.9rem;
+            background: var(--terracotta);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 800px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-areas: "sidebar" "pop";
+            }
+
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+
+            .recipe img {
+                float: none;
+                width: 100%;
+                height: 220px;
+                margin: 0 0 1rem;
+            }
+
+            .recipe h3 {
+                clear: none;
+            }
+
+            .ingredients {
+                clear: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <h1>Dishita Di Meethaiyan</h1>
+        <p>A collection of Indian sweets, made at home</p>
+    </header>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <h3>Recipes</h3>
+            <nav id="recipe-nav">
+                <a href="#gulab-jamun">Gulab Jamun</a>
+                <a href="#kaju-katli">Kaju Katli</a>
+                <a href="#rasgulla">Rasgulla</a>
+                <a href="#doda-barfi">Doda Barfi</a>
+                <a href="#rasmalai">Rasmalai</a>
+                <a href="#chocolate-barfi">Chocolate Barfi</a>
+                <a href="#jalebi">Jalebi</a>
+                <a href="#mishti-doi">Mishti Doi</a>
+                <a href="#falooda">Falooda</a>
+                <a href="#gajar-ka-halwa">Gajar Ka Halwa</a>
+                <a href="#kala-jamun">Kala Jamun</a>
+                <a href="#kulfi">Kulfi</a>
+                <a href="#besan-laddu">Besan Laddu</a>
+                <a href="#milk-peda">Milk Peda</a>
+                <a href="#kheer">Kheer</a>
+                <a href="#soan-papdi">Soan Papdi</a>
+                <a href="#balushahi">Balushahi</a>
+            </nav>
+        </aside>
+
+        <main class="pop">
+
+            <article class="recipe" id="gulab-jamun">
+                <img src="image.png" alt="Gulab Jamun">
+                <h2>Gulab Jamun</h2>
+                <p class="intro">It is a classic Indian sweet made with paneer, flour, sooji, and Nestlé MILKMAID. This
+                    recipe shows you how to make soft Gulab Jamun at home by preparing a smooth dough with paneer and
+                    Nestlé.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 Nestle Milkmaid mini</li>
+                    <li>1 kg sugar</li>
+                    <li>200 gram flour</li>
+                    <li>200 gram sooji</li>
+                    <li>600 gram grated paneer</li>
+                    <li>1½ tsp baking powder</li>
+                    <li>1½ tsp baking soda</li>
+                    <li>Oil, for frying</li>
+                    <li>2 litres water</li>
+                    <li>6-8 nos coarsely crushed cardamom</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a bowl, add 200 grams of grated paneer, 200 grams of flour, 200 grams of sooji, 1½ tsp baking
+                        powder, and 1½ tsp baking soda. Mix well.</li>
+                    <li>Add 1 Nestle Milkmaid mini to the mixture and knead it into a smooth dough.</li>
+                    <li>Divide the dough into small portions and shape them into smooth balls.</li>
+                    <li>Heat oil in a deep pan for frying the balls.</li>
+                    <li>Fry the balls on low-medium heat until they turn golden brown.</li>
+                    <li>In another pan, prepare sugar syrup by adding 1 kg sugar and 2 litres of water. Bring it to a
+                        boil and add coarsely crushed cardamom.</li>
+                    <li>Once the sugar syrup is ready, add the fried balls to the syrup and let them soak for at least
+                        30 minutes.</li>
+                    <li>Serve the Gulab Jamun warm or at room temperature.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="kaju-katli">
+                <img src="image copy.png" alt="Kaju Katli">
+                <h2>Kaju Katli</h2>
+                <p class="intro">Kaju katli is one of the most popular Indian sweets (mithai) that is made or bought for
+                    the Diwali celebration. Here kaju=cashews and katli=thin slices. Even though the slices are not
+                    thick like burfi pieces (fudge), it is also known as kaju barfi or burfi.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup cashews</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 cup water</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>1 tsp ghee (clarified butter)</li>
+                    <li>Silver leaf (optional, for garnish)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Soak the cashews in water for 2-3 hours. Drain and grind them into a smooth paste.</li>
+                    <li>In a non-stick pan, combine sugar and water. Heat until the sugar dissolves completely and forms
+                        a syrup.</li>
+                    <li>Add the cashew paste to the syrup and cook on low heat, stirring continuously until the mixture
+                        thickens and starts to leave the sides of the pan.</li>
+                    <li>Add cardamom powder and ghee to the mixture and mix well.</li>
+                    <li>Transfer the mixture onto a greased plate and flatten it with a rolling pin to your desired
+                        thickness.</li>
+                    <li>Allow it to cool slightly, then cut into diamond or square shapes. Optionally, garnish with
+                        silver leaf.</li>
+                    <li>Let the kaju katli cool completely before serving or storing in an airtight container.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="rasgulla">
+                <img src="image copy 2.png" alt="Rasgulla">
+                <h2>Rasgulla</h2>
+                <p class="intro">Rasgulla is a popular Indian dessert made from chhena (Indian cottage cheese) and
+                    semolina dough, cooked in sugar syrup. It is soft, spongy, and sweet, often served chilled.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 litre full-fat milk</li>
+                    <li>1-2 tbsp lemon juice or vinegar</li>
+                    <li>1 cup sugar</li>
+                    <li>4 cups water</li>
+                    <li>1 tsp cardamom powder</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Boil the milk in a pan. Once it comes to a boil, add lemon juice or vinegar to curdle the milk.
+                        Stir gently until the whey separates.</li>
+                    <li>Strain the curdled milk using a muslin cloth or fine sieve to collect the chhena. Rinse it under
+                        cold water to remove any lemon/vinegar taste.</li>
+                    <li>Squeeze out excess water from the chhena and knead it for a few minutes until smooth and soft.
+                    </li>
+                    <li>Divide the chhena into small portions and roll them into smooth balls, ensuring there are no
+                        cracks.</li>
+                    <li>In a large pan, combine sugar and water to make sugar syrup. Bring it to a boil and add cardamom
+                        powder.</li>
+                    <li>Gently add the chhena balls to the boiling sugar syrup. Cover and cook on medium heat for about
+                        15-20 minutes, until the balls expand and become spongy.</li>
+                    <li>Remove from heat and let the rasgullas cool in the syrup. Serve chilled or at room temperature.
+                    </li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="doda-barfi">
+                <img src="image copy 3.png" alt="Doda Barfi">
+                <h2>Doda Barfi</h2>
+                <p class="intro">Doda Barfi is a traditional, rich Indian milk fudge originating from Punjab. Known for
+                    its unique, chewy-grainy texture and deep caramelized flavor, it is primarily made from slow-cooked
+                    milk solids (khoya), cracked wheat (daliya), ghee, sugar, and a generous amount of chopped dry
+                    fruits.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup cracked wheat (daliya)</li>
+                    <li>1 cup khoya (milk solids)</li>
+                    <li>1 cup sugar</li>
+                    <li>1/2 cup ghee (clarified butter)</li>
+                    <li>1/4 cup chopped dry fruits (almonds, cashews, pistachios)</li>
+                    <li>1/2 tsp cardamom powder</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Heat ghee in a heavy-bottomed pan and add the cracked wheat. Roast it on low heat until it turns
+                        golden brown and releases a nutty aroma.</li>
+                    <li>Add the khoya to the roasted wheat and cook, stirring continuously, until the mixture is well
+                        combined and starts to thicken.</li>
+                    <li>Add sugar and cardamom powder to the mixture, and continue to cook until the sugar dissolves and
+                        the mixture thickens further.</li>
+                    <li>Stir in the chopped dry fruits and cook for another 2-3 minutes.</li>
+                    <li>Grease a plate or tray with ghee and pour the mixture onto it. Spread it evenly and allow it to
+                        cool slightly.</li>
+                    <li>Once the mixture is firm enough, cut it into square or diamond-shaped pieces. Let it cool
+                        completely before serving or storing in an airtight container.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="rasmalai">
+                <img src="image copy 4.png" alt="Rasmalai">
+                <h2>Rasmalai</h2>
+                <p class="intro">Rasmalai is a popular Indian dessert consisting of soft, spongy cheese balls (chhena)
+                    soaked in sweet, flavored milk. It is often garnished with saffron and nuts, making it a rich and
+                    indulgent treat.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 litre full-fat milk</li>
+                    <li>1-2 tbsp lemon juice or vinegar</li>
+                    <li>1 cup sugar</li>
+                    <li>4 cups water</li>
+                    <li>1 tsp cardamom powder</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Boil the milk in a pan. Once it comes to a boil, add lemon juice or vinegar to curdle the milk.
+                        Stir gently until the whey separates.</li>
+                    <li>Strain the curdled milk using a muslin cloth or fine sieve to collect the chhena. Rinse it under
+                        cold water to remove any lemon/vinegar taste.</li>
+                    <li>Squeeze out excess water from the chhena and knead it for a few minutes until smooth and soft.
+                    </li>
+                    <li>Divide the chhena into small portions and roll them into smooth balls, ensuring there are no
+                        cracks.</li>
+                    <li>In a large pan, combine sugar and water to make sugar syrup. Bring it to a boil and add cardamom
+                        powder.</li>
+                    <li>Gently add the chhena balls to the boiling sugar syrup. Cover and cook on medium heat for about
+                        15-20 minutes, until the balls expand and become spongy.</li>
+                    <li>In another pan, boil 1 litre of milk and reduce it to half its quantity. Add sugar and cardamom
+                        powder, and simmer for a few minutes until the milk thickens slightly.</li>
+                    <li>Remove the chhena balls from the sugar syrup and gently squeeze out excess syrup. Place them in
+                        the thickened milk and let them soak for a few hours to absorb the flavors.</li>
+                    <li>Garnish with saffron strands and chopped nuts before serving. Serve chilled or at room
+                        temperature.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="chocolate-barfi">
+                <img src="image copy 5.png" alt="Chocolate Barfi">
+                <h2>Chocolate Barfi</h2>
+                <p class="intro">Chocolate barfi is a rich fusion of traditional Indian milk fudge (barfi) and
+                    chocolate. It is made by cooking reduced milk solids (mawa/khoya) or milk powder with sugar, cocoa
+                    powder, and ghee until it forms a thick, fudgy consistency, then setting it in layers and garnishing
+                    it with chopped nuts.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup milk powder</li>
+                    <li>1/2 cup cocoa powder</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 cup ghee (clarified butter)</li>
+                    <li>1/4 cup milk</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>Chopped nuts for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a non-stick pan, heat ghee on low heat. Add milk powder and cocoa powder, and roast for a
+                        minute to remove any raw taste.</li>
+                    <li>Add sugar and milk to the pan, stirring continuously until the mixture thickens and starts to
+                        leave the sides of the pan.</li>
+                    <li>Add cardamom powder and mix well. Continue to cook for another 2-3 minutes until the mixture
+                        reaches a fudgy consistency.</li>
+                    <li>Grease a plate or tray with ghee and pour the mixture onto it. Spread it evenly and smooth the
+                        surface with a spatula.</li>
+                    <li>Allow it to cool slightly, then cut into square or diamond-shaped pieces. Optionally, garnish
+                        with chopped nuts.</li>
+                    <li>Let the chocolate barfi cool completely before serving or storing in an airtight container.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="jalebi">
+                <img src="image copy 6.png" alt="Jalebi">
+                <h2>Jalebi</h2>
+                <p class="intro">Jalebi is a beloved, spiral-shaped South Asian sweet made by deep-frying a fermented
+                    flour batter in concentric circles and soaking them in warm sugar syrup. It is known for its
+                    signature crispy, crunchy exterior and juicy, syrupy center.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup all-purpose flour (maida)</li>
+                    <li>2 tbsp chickpea flour (besan)</li>
+                    <li>1/4 tsp baking powder</li>
+                    <li>1/4 tsp turmeric powder (for color)</li>
+                    <li>1/2 cup yogurt</li>
+                    <li>1/2 cup water (adjust as needed)</li>
+                    <li>1 cup sugar</li>
+                    <li>1/2 cup water (for sugar syrup)</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Oil or ghee, for deep frying</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a mixing bowl, combine all-purpose flour, chickpea flour, baking powder, and turmeric powder.
+                        Mix well.</li>
+                    <li>Add yogurt and water to the dry ingredients, whisking until you get a smooth, thick batter.
+                        Cover and let it ferment for 6-8 hours or overnight.</li>
+                    <li>In a separate pan, prepare the sugar syrup by combining sugar and water. Heat until the sugar
+                        dissolves completely, then add cardamom powder and saffron strands. Keep the syrup warm.</li>
+                    <li>Heat oil or ghee in a deep frying pan over medium heat. Fill a piping bag or squeeze bottle with
+                        the fermented batter.</li>
+                    <li>Pipe the batter into the hot oil in spiral shapes, starting from the center and moving outward.
+                        Fry until golden and crisp, then remove and drain on paper towels.</li>
+                    <li>Immediately dip the fried jalebis into the warm sugar syrup for a few seconds, ensuring they are
+                        well-coated. Remove and let excess syrup drip off.</li>
+                    <li>Serve the jalebis warm or at room temperature, enjoying their crispy texture and sweet, syrupy
+                        flavor.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="mishti-doi">
+                <img src="image copy 7.png" alt="Mishti Doi">
+                <h2>Mishti Doi</h2>
+                <p class="intro">Mishti Doi is a traditional Bengali dessert made from sweetened, fermented yogurt. It
+                    is known for its creamy texture and rich, caramelized flavor, often served chilled.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 litre full-fat milk</li>
+                    <li>1/2 cup sugar</li>
+                    <li>2 tbsp plain yogurt (for fermentation)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Boil the milk in a heavy-bottomed pan, stirring occasionally to prevent it from sticking. Reduce
+                        the milk to about half its original volume.</li>
+                    <li>Add sugar to the reduced milk and stir until it dissolves completely. Allow the milk to cool to
+                        a lukewarm temperature.</li>
+                    <li>Once the milk is lukewarm, add the plain yogurt and mix well. Pour the mixture into a clay pot
+                        or any container of your choice.</li>
+                    <li>Cover the container and let it sit in a warm place for 6-8 hours or until the yogurt sets and
+                        thickens.</li>
+                    <li>Refrigerate the Mishti Doi for a few hours before serving. Enjoy it chilled, garnished with a
+                        sprinkle of cardamom powder or saffron strands if desired.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="falooda">
+                <img src="image copy 8.png" alt="Falooda">
+                <h2>Falooda</h2>
+                <p class="intro">Falooda is a popular Indian dessert drink made with a combination of rose syrup,
+                    vermicelli, sweet basil seeds, milk, and ice cream. It is known for its unique texture and
+                    refreshing taste.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1/4 cup sweet basil seeds (sabja seeds)</li>
+                    <li>1/4 cup vermicelli</li>
+                    <li>2 cups milk</li>
+                    <li>2-3 tbsp rose syrup</li>
+                    <li>2 scoops vanilla or rose ice cream</li>
+                    <li>Chopped nuts and dried fruits for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Soak the sweet basil seeds in water for about 30 minutes until they swell and become gelatinous.
+                        Drain and set aside.</li>
+                    <li>Cook the vermicelli in boiling water until soft, then drain and rinse with cold water to stop
+                        the cooking process. Set aside.</li>
+                    <li>In a separate pan, heat the milk until it is warm but not boiling. You can also sweeten the milk
+                        with sugar if desired.</li>
+                    <li>Combine the soaked basil seeds, cooked vermicelli, and warm milk in a large bowl. Stir well to
+                        mix all the ingredients.</li>
+                    <li>Add the rose syrup and ice cream to the mixture and stir gently until everything is well
+                        combined.</li>
+                    <li>Serve the Falooda chilled in glasses, garnished with chopped nuts and dried fruits if desired.
+                    </li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="gajar-ka-halwa">
+                <img src="image copy 9.png" alt="Gajar Ka Halwa">
+                <h2>Gajar Ka Halwa</h2>
+                <p class="intro">Gajar ka halwa, also known as carrot pudding, is a traditional Indian dessert made from
+                    grated carrots, milk, sugar, and ghee. It is flavored with cardamom and garnished with nuts, making
+                    it a rich and indulgent treat.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>4 cups grated carrots</li>
+                    <li>4 cups full-fat milk</li>
+                    <li>1 cup sugar</li>
+                    <li>1/4 cup ghee (clarified butter)</li>
+                    <li>1/2 tsp cardamom powder</li>
+                    <li>Chopped nuts for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Heat ghee in a heavy-bottomed pan and add the grated carrots. Sauté the carrots for a few
+                        minutes until they soften slightly.</li>
+                    <li>Add the full-fat milk and sugar to the pan and stir well to combine all the ingredients.</li>
+                    <li>Reduce the heat to low and let the mixture simmer for about 20-25 minutes, stirring occasionally
+                        to prevent it from sticking.</li>
+                    <li>Once the halwa thickens, add the cardamom powder and stir well to incorporate.</li>
+                    <li>Remove from heat and let it cool slightly before serving. Garnish with chopped nuts if desired.
+                    </li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="kala-jamun">
+                <img src="image copy 10.png" alt="Kala Jamun">
+                <h2>Kala Jamun</h2>
+                <p class="intro">Kala Jamun is a popular Indian dessert made from khoya (reduced milk solids) and
+                    deep-fried to a dark brown color. It is soaked in sugar syrup, giving it a rich, sweet flavor and a
+                    soft, spongy texture.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup khoya (reduced milk solids)</li>
+                    <li>1/4 cup all-purpose flour (maida)</li>
+                    <li>1/4 tsp baking soda</li>
+                    <li>1 cup sugar</li>
+                    <li>1 cup water</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>Oil or ghee, for deep frying</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a mixing bowl, combine khoya, all-purpose flour, and baking soda. Knead the mixture into a
+                        smooth dough.</li>
+                    <li>Divide the dough into small portions and roll them into smooth balls, ensuring there are no
+                        cracks.</li>
+                    <li>Heat oil or ghee in a deep frying pan over medium heat. Fry the khoya balls until they turn dark
+                        brown and are cooked through.</li>
+                    <li>In a separate pan, prepare the sugar syrup by combining sugar and water. Heat until the sugar
+                        dissolves completely, then add cardamom powder.</li>
+                    <li>Once the fried khoya balls are ready, immerse them in the warm sugar syrup for at least 30
+                        minutes to soak up the sweetness.</li>
+                    <li>Serve the Kala Jamun warm or at room temperature, garnished with chopped nuts if desired.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="kulfi">
+                <img src="image copy 11.png" alt="Kulfi">
+                <h2>Kulfi</h2>
+                <p class="intro">Kulfi is a traditional Indian frozen dessert made from thickened milk, sugar, and
+                    various flavorings such as cardamom, saffron, or pistachios. It has a dense and creamy texture,
+                    making it a popular treat during hot weather.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 litre full-fat milk</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Chopped pistachios or almonds for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a heavy-bottomed pan, bring the milk to a boil. Reduce the heat and simmer, stirring
+                        occasionally, until the milk thickens to about half its original volume.</li>
+                    <li>Add sugar, cardamom powder, and saffron strands (if using) to the thickened milk. Stir well to
+                        combine and cook for another 5-10 minutes.</li>
+                    <li>Remove the pan from heat and let the mixture cool to room temperature.</li>
+                    <li>Pour the cooled mixture into kulfi molds or small cups. Cover with foil or plastic wrap and
+                        insert sticks if desired.</li>
+                    <li>Freeze the kulfi for at least 6-8 hours or until fully set.</li>
+                    <li>To serve, dip the molds in warm water for a few seconds to loosen the kulfi, then unmold onto
+                        serving plates. Garnish with chopped pistachios or almonds if desired.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="besan-laddu">
+                <img src="image copy 12.png" alt="Besan Laddu">
+                <h2>Besan Laddu</h2>
+                <p class="intro">Besan Laddu is a popular Indian sweet made from gram flour (besan), sugar, and ghee. It
+                    is shaped into round balls and often garnished with nuts and saffron.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup besan (gram flour)</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 cup ghee (clarified butter)</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Chopped nuts for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a mixing bowl, combine besan, sugar, and cardamom powder. Mix well.</li>
+                    <li>Add ghee and mix until the dough comes together.</li>
+                    <li>Divide the dough into small portions and roll them into smooth balls.</li>
+                    <li>Heat ghee in a deep frying pan over medium heat. Fry the besan balls until they turn golden
+                        brown.</li>
+                    <li>Remove the fried balls from the pan and drain on paper towels.</li>
+                    <li>Garnish with chopped nuts and saffron strands if desired.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="milk-peda">
+                <img src="image copy 13.png" alt="Milk Peda">
+                <h2>Milk Peda</h2>
+                <p class="intro">Milk Peda is a traditional Indian sweet made from milk, sugar, and flavorings such as
+                    cardamom or saffron. It has a soft, fudgy texture and is often shaped into small discs or balls.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 litre full-fat milk</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Chopped nuts for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a heavy-bottomed pan, bring the milk to a boil. Reduce the heat and simmer, stirring
+                        occasionally, until the milk thickens to about half its original volume.</li>
+                    <li>Add sugar, cardamom powder, and saffron strands (if using) to the thickened milk. Stir well to
+                        combine and cook for another 5-10 minutes.</li>
+                    <li>Remove the pan from heat and let the mixture cool slightly.</li>
+                    <li>Once the mixture is cool enough to handle, shape it into small discs or balls using your hands.
+                    </li>
+                    <li>Garnish with chopped nuts if desired.</li>
+                    <li>Allow the milk peda to set for a few hours before serving or storing in an airtight container.
+                    </li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="kheer">
+                <img src="image copy 14.png" alt="Kheer">
+                <h2>Kheer</h2>
+                <p class="intro">Kheer is a traditional Indian rice pudding made by boiling rice, broken wheat, or
+                    vermicelli with milk and sugar. It is flavored with cardamom, saffron, and garnished with nuts and
+                    raisins.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1/4 cup rice (or vermicelli)</li>
+                    <li>1 litre full-fat milk</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Chopped nuts and raisins for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>Rinse the rice (or vermicelli) thoroughly and soak it in water for about 30 minutes. Drain
+                        before cooking.</li>
+                    <li>In a heavy-bottomed pan, bring the milk to a boil. Reduce the heat and add the soaked rice to
+                        the milk. Cook on low heat, stirring occasionally, until the rice is fully cooked and the milk
+                        thickens.</li>
+                    <li>Add sugar, cardamom powder, and saffron strands (if using) to the kheer. Stir well to combine
+                        and cook for another 5-10 minutes until the sugar dissolves completely.</li>
+                    <li>Remove the pan from heat and let the kheer cool slightly. Garnish with chopped nuts and raisins
+                        if desired.</li>
+                    <li>Serve the kheer warm or chilled, according to your preference.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="soan-papdi">
+                <img src="image copy 15.png" alt="Soan Papdi">
+                <h2>Soan Papdi</h2>
+                <p class="intro">Soan Papdi is a popular Indian sweet known for its flaky, melt-in-the-mouth texture. It
+                    is made from gram flour, sugar, ghee, and flavored with cardamom and saffron.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup gram flour (besan)</li>
+                    <li>1 cup sugar</li>
+                    <li>1/4 cup ghee (clarified butter)</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                    <li>Chopped nuts for garnish (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a non-stick pan, heat ghee on low heat. Add gram flour and roast it until it turns golden
+                        brown and releases a nutty aroma.</li>
+                    <li>In a separate pan, prepare sugar syrup by combining sugar and a little water. Heat until the
+                        sugar dissolves completely and reaches a one-string consistency.</li>
+                    <li>Gradually add the roasted gram flour to the sugar syrup, stirring continuously to avoid lumps.
+                    </li>
+                    <li>Add cardamom powder and saffron strands (if using) to the mixture and mix well.</li>
+                    <li>Pour the mixture onto a greased plate or tray and spread it evenly. Allow it to cool slightly
+                        before cutting into square or diamond-shaped pieces.</li>
+                    <li>Garnish with chopped nuts if desired. Let the Soan Papdi cool completely before serving or
+                        storing in an airtight container.</li>
+                </ol>
+            </article>
+
+            <article class="recipe" id="balushahi">
+                <img src="image copy 16.png" alt="Balushahi">
+                <h2>Balushahi</h2>
+                <p class="intro">Balushahi is a popular Indian sweet. It is a deep-fried pastry made from flour, ghee,
+                    and sugar, and is often served with rabri or kheer.</p>
+                <h3>Ingredients</h3>
+                <ul class="ingredients">
+                    <li>1 cup all-purpose flour</li>
+                    <li>1/2 cup ghee (clarified butter)</li>
+                    <li>1/2 cup sugar</li>
+                    <li>1/4 cup milk</li>
+                    <li>1/4 tsp cardamom powder</li>
+                    <li>A few saffron strands (optional)</li>
+                </ul>
+                <h3>Method</h3>
+                <ol class="method">
+                    <li>In a mixing bowl, combine flour and ghee. Rub them together until the mixture resembles
+                        breadcrumbs.</li>
+                    <li>Add sugar, milk, and cardamom powder to the mixture. Knead the dough until it comes together.
+                    </li>
+                    <li>Roll out the dough on a floured surface to about 1/4 inch thickness.</li>
+                    <li>Cut the dough into diamond or square shapes using a sharp knife or cookie cutter.</li>
+                    <li>Heat oil in a deep pan for deep frying. Fry the pieces until they turn golden brown on both
+                        sides.</li>
+                    <li>Drain the fried Balushahi on paper towels and serve warm with rabri or kheer.</li>
+                </ol>
+            </article>
+
+        </main>
+    </div>
+
+    <script>
+        // Scroll-spy: highlight the sidebar link for whichever recipe is in view
+        const links = document.querySelectorAll('#recipe-nav a');
+        const sections = document.querySelectorAll('.recipe');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    links.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+
+</body>
+
+</html>
